@@ -3,14 +3,7 @@
  */
 
 var WHITE = 'white';
-var BALL_RADIUS = 13;
-var PADDLE_HEIGHT = 90;
-var PADDLE_WIDTH = 15;
-var KEY_UP = 38;
-var KEY_DOWN = 40;
-var KEY_W = 87;
-var KEY_S = 83;
-var PADDLE_STEP = 8;
+var CONSTANTS = new Constants();
 var gameCanvas = document.getElementById('gameboard');
 var dx = 2;
 var dy = -2;
@@ -29,22 +22,22 @@ document.addEventListener("keyup", keyUpHandler, false);
 function keyDownHandler(e) {
 
     switch (e.keyCode) {
-        case KEY_UP:
+        case CONSTANTS.KEY_UP:
         {
             rightUp = true;
             break;
         }
-        case KEY_DOWN:
+        case CONSTANTS.KEY_DOWN:
         {
             rightDown = true;
             break;
         }
-        case KEY_W:
+        case CONSTANTS.KEY_W:
         {
             leftUp = true;
             break;
         }
-        case KEY_S:
+        case CONSTANTS.KEY_S:
         {
             leftDown = true;
             break;
@@ -55,22 +48,22 @@ function keyDownHandler(e) {
 
 function keyUpHandler(e) {
     switch (e.keyCode) {
-        case KEY_UP:
+        case CONSTANTS.KEY_UP:
         {
             rightUp = false;
             break;
         }
-        case KEY_DOWN:
+        case CONSTANTS.KEY_DOWN:
         {
             rightDown = false;
             break;
         }
-        case KEY_W:
+        case CONSTANTS.KEY_W:
         {
             leftUp = false;
             break;
         }
-        case KEY_S:
+        case CONSTANTS.KEY_S:
         {
             leftDown = false;
             break;
@@ -92,25 +85,25 @@ function drawBall(ctx, x, y, color) {
     if (ctx) {
 
         ctx.beginPath();
-        ctx.arc(x, y, BALL_RADIUS, 0, 2 * Math.PI);
+        ctx.arc(x, y, CONSTANTS.BALL_RADIUS, 0, 2 * Math.PI);
         ctx.fillStyle = color;
         ctx.fill();
         ctx.closePath();
     }
 }
 
-var rightPaddleX = (gameCanvas.width - PADDLE_WIDTH);
-var rightPaddleY = (gameCanvas.height - PADDLE_HEIGHT) / 2;
+var rightPaddleX = (gameCanvas.width - CONSTANTS.PADDLE_WIDTH);
+var rightPaddleY = (gameCanvas.height - CONSTANTS.PADDLE_HEIGHT) / 2;
 function addRightPaddle(ctx) {
 
     if (rightUp && rightPaddleY > 0) {
-        rightPaddleY -= PADDLE_STEP;
-    } else if (rightDown && rightPaddleY < gameCanvas.height - PADDLE_HEIGHT) {
-        rightPaddleY += PADDLE_STEP;
+        rightPaddleY -= CONSTANTS.PADDLE_STEP;
+    } else if (rightDown && rightPaddleY < gameCanvas.height - CONSTANTS.PADDLE_HEIGHT) {
+        rightPaddleY += CONSTANTS.PADDLE_STEP;
     }
 
     ctx.beginPath();
-    ctx.rect(rightPaddleX, rightPaddleY, PADDLE_WIDTH, PADDLE_HEIGHT);
+    ctx.rect(rightPaddleX, rightPaddleY, CONSTANTS.PADDLE_WIDTH, CONSTANTS.PADDLE_HEIGHT);
     ctx.fillStyle = getColor(WHITE);
     ctx.fill();
     ctx.closePath();
@@ -118,17 +111,17 @@ function addRightPaddle(ctx) {
 }
 
 var leftPaddleX = 0;
-var leftPaddleY = (gameCanvas.height - PADDLE_HEIGHT) / 2;
+var leftPaddleY = (gameCanvas.height - CONSTANTS.PADDLE_HEIGHT) / 2;
 function addLeftPaddle(ctx) {
 
     if (leftUp && leftPaddleY > 0) {
-        leftPaddleY -= PADDLE_STEP;
-    } else if (leftDown && leftPaddleY < gameCanvas.height - PADDLE_HEIGHT) {
-        leftPaddleY += PADDLE_STEP;
+        leftPaddleY -= CONSTANTS.PADDLE_STEP;
+    } else if (leftDown && leftPaddleY < gameCanvas.height - CONSTANTS.PADDLE_HEIGHT) {
+        leftPaddleY += CONSTANTS.PADDLE_STEP;
     }
 
     ctx.beginPath();
-    ctx.rect(leftPaddleX, leftPaddleY, PADDLE_WIDTH, PADDLE_HEIGHT);
+    ctx.rect(leftPaddleX, leftPaddleY, CONSTANTS.PADDLE_WIDTH, CONSTANTS.PADDLE_HEIGHT);
     ctx.fillStyle = getColor(WHITE);
     ctx.fill();
     ctx.closePath();
@@ -154,9 +147,9 @@ function mainLoop() {
     //
 
     //right wall
-    if (x + dx > gameCanvas.width - BALL_RADIUS) {
+    if (x + dx > gameCanvas.width - CONSTANTS.BALL_RADIUS) {
         // y should between the paddle y coordinate values
-        if (y > rightPaddleY && y < rightPaddleY + PADDLE_HEIGHT) {
+        if (y > rightPaddleY && y < rightPaddleY + CONSTANTS.PADDLE_HEIGHT) {
             dx = -dx;
         }
         else {
@@ -166,8 +159,8 @@ function mainLoop() {
 
     }
     // left wall
-    else if (x + dx < BALL_RADIUS) {
-        if (y > leftPaddleY && y < leftPaddleY + PADDLE_HEIGHT) {
+    else if (x + dx < CONSTANTS.BALL_RADIUS) {
+        if (y > leftPaddleY && y < leftPaddleY + CONSTANTS.PADDLE_HEIGHT) {
             dx = -dx;
         }
         else {
@@ -176,10 +169,10 @@ function mainLoop() {
         }
     }
 
-    if (y + dy > gameCanvas.height - BALL_RADIUS) {
+    if (y + dy > gameCanvas.height - CONSTANTS.BALL_RADIUS) {
         dy = -dy;
     }
-    else if (y + dy < BALL_RADIUS) {
+    else if (y + dy < CONSTANTS.BALL_RADIUS) {
         dy = -dy;
     }
 
